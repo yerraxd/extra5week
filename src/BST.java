@@ -6,10 +6,18 @@ public class BST {
     }
 
     private Node root;
+    private int size;
 
-    public void insert(int key) {
+    public int size() { return size; }
+    public boolean isEmpty() { return size == 0; }
+
+    public boolean insert(int key) {
+        if (contains(key)) return false;
         root = insert(root, key);
+        size++;
+        return true;
     }
+
 
     private Node insert(Node node, int key) {
         if (node == null) return new Node(key);
