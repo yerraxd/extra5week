@@ -49,6 +49,29 @@ public class BST {
         result.add(node.key);
         inorder(node.right, result);
     }
+    public boolean delete(int key) {
+        if (!contains(key)) return false;
+        root = delete(root, key);
+        size--;
+        return true;
+    }
+
+    private Node delete(Node node, int key) {
+        if (node == null) return null;
+        if (key < node.key) {
+            node.left = delete(node.left, key);
+        } else if (key > node.key) {
+            node.right = delete(node.right, key);
+        } else {
+            if (node.left == null) return node.right;
+            if (node.right == null) return node.left;
+            Node successor = node.right;
+            while (successor.left != null) successor = successor.left;
+            node.key = successor.key;
+            node.right = delete(node.right, successor.key);
+        }
+        return node;
+    }
 
 
 }
