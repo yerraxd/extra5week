@@ -57,26 +57,31 @@ public class BST {
         inorder(node.right, result);
     }
     public boolean delete(int key) {
-        if (!contains(key)) return false;
-        root = delete(root, key);
+        Node parent = null;
+        Node cur = root;
+        while (cur != null && cur.key != key) {
+            parent = cur;
+            cur = key < cur.key ? cur.left : cur.right;
+        }
+        if (cur == null) return false;
+        if (cur.left != null && cur.right != null) {
+            Node successorParent = cur;
+            Node successor = cur.right;
+            while (successor.left != null) {
+                successorParent = successor;
+                successor = successor.left;
+            }
+            cur.key = successor.key;
+            parent = successorParent;
+            cur = successor;
+        }
+
+        Node child = cur.left != null ? cur.left : cur.right;
+        if (parent == null) root = child;
+        else if (parent.left == cur) parent.left = child;
+        else parent.right = child;
         size--;
         return true;
-    }
-
-    private Node delete(Node node, int key) {
-        if (node == null) return null;
-        if (key < node.key) {
-            node.left = delete(node.left, key);
-        } else if (key > node.key) {
-            node.right = delete(node.right, key);
-        } else {
-            if (node.left == null) return node.right;
-            if (node.right == null) return node.left;
-            Node successor = findMin(node.right);
-            node.key = successor.key;
-            node.right = delete(node.right, successor.key);
-        }
-        return node;
     }
     public int min() {
         if (root == null) throw new NoSuchElementException("tree is empty");
