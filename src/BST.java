@@ -89,7 +89,13 @@ public class BST {
         while (node.right != null) node = node.right;
         return node;
     }
+    public int height() {
+        return height(root);
+    }
 
+    private int height(Node node) {
+        return node == null ? -1 : 1 + Math.max(height(node.left), height(node.right));
+    }
 
 
 }
