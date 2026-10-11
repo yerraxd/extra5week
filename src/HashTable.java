@@ -13,6 +13,7 @@ public class HashTable {
 
     public int size() { return size; }
     public boolean isEmpty() { return size == 0; }
+    public int capacity() { return table.length; }
 
     private int hash(int key) {
         int h = key ^ (key >>> 16);
@@ -56,13 +57,23 @@ public class HashTable {
             }
         }
     }
-
-
     public boolean contains(int key) {
         for (Node n = table[hash(key)]; n != null; n = n.next) {
             if (n.key == key) return true;
         }
         return false;
     }
+    public int maxChainLength() {
+        int max = 0;
+        for (Node head : table) {
+            int len = 0;
+            for (Node n = head; n != null; n = n.next) {
+                len++;
+            }
+            max = Math.max(max, len);
+        }
+        return max;
+    }
+
 
 }
