@@ -66,8 +66,7 @@ public class BST {
         } else {
             if (node.left == null) return node.right;
             if (node.right == null) return node.left;
-            Node successor = node.right;
-            while (successor.left != null) successor = successor.left;
+            Node successor = findMin(node.right);
             node.key = successor.key;
             node.right = delete(node.right, successor.key);
         }
@@ -75,16 +74,20 @@ public class BST {
     }
     public int min() {
         if (root == null) throw new NoSuchElementException("tree is empty");
-        Node cur = root;
-        while (cur.left != null) cur = cur.left;
-        return cur.key;
+        return findMin(root).key;
     }
 
     public int max() {
-        if (root == null) throw new NoSuchElementException("tree is empty");
-        Node cur = root;
-        while (cur.right != null) cur = cur.right;
-        return cur.key;
+        return findMax(root).key;
+    }
+    private Node findMin(Node node) {
+        while (node.left != null) node = node.left;
+        return node;
+    }
+
+    private Node findMax(Node node) {
+        while (node.right != null) node = node.right;
+        return node;
     }
 
 
