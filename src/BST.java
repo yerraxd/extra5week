@@ -1,6 +1,7 @@
 import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.ArrayDeque;
 
 public class BST {
     private static class Node {
@@ -46,15 +47,18 @@ public class BST {
     }
     public List<Integer> inorder() {
         List<Integer> result = new ArrayList<>();
-        inorder(root, result);
+        ArrayDeque<Node> stack = new ArrayDeque<>();
+        Node cur = root;
+        while (cur != null || !stack.isEmpty()) {
+            while (cur != null) {
+                stack.push(cur);
+                cur = cur.left;
+            }
+            cur = stack.pop();
+            result.add(cur.key);
+            cur = cur.right;
+        }
         return result;
-    }
-
-    private void inorder(Node node, List<Integer> result) {
-        if (node == null) return;
-        inorder(node.left, result);
-        result.add(node.key);
-        inorder(node.right, result);
     }
     public boolean delete(int key) {
         Node parent = null;
@@ -101,12 +105,18 @@ public class BST {
         return node;
     }
     public int height() {
-        return height(root);
+        if (root == null) return -1;
+        ArrayDeque<Node> queue = new ArrayDeque<>();
+        queue.add(root);
+        int height = -1;
+        while (!queue.isEmpty()) {
+            height++;
+            for (int i = queue.size(); i > 0; i--) {
+                Node node = queue.poll();
+                if (node.left != null) queue.add(node.left);
+                if (node.right != null) queue.add(node.right);
+            }
+        }
+        return height;
     }
-
-    private int height(Node node) {
-        return node == null ? -1 : 1 + Math.max(height(node.left), height(node.right));
-    }
-
-
 }
