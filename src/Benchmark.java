@@ -27,7 +27,19 @@ public class Benchmark {
             System.out.println("BST delete n=" + n + ": " + bstDelete / 1000 + " us");
             long hashDelete = measure(() -> { for (int k : keys) table.delete(k); });
             System.out.println("Hash delete n=" + n + ": " + hashDelete / 1000 + " us");
+            printShape(keys);
         }
+    }
+    private static void printShape(int[] keys) {
+        BST tree = new BST();
+        HashTable table = new HashTable();
+        for (int k : keys) {
+            tree.insert(k);
+            table.insert(k);
+        }
+        System.out.println(" shape: BST height=" + tree.height() +
+                ", Hash maxChain=" + table.maxChainLength() +
+                ", capacity=" + table.capacity());
     }
     private static long measure(Runnable task) {
         long start = System.nanoTime();
