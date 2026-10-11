@@ -25,6 +25,15 @@ public class Benchmark {
             for (int k : keys) if (table.contains(k)) sink++;
             elapsed = System.nanoTime() - start;
             System.out.println("Hash search n=" + n + ": " + elapsed / 1000 + " us");
+            start = System.nanoTime();
+            for (int k : keys) tree.delete(k);
+            elapsed = System.nanoTime() - start;
+            System.out.println("BST delete n=" + n + ": " + elapsed / 1000 + " us");
+
+            start = System.nanoTime();
+            for (int k : keys) table.delete(k);
+            elapsed = System.nanoTime() - start;
+            System.out.println("Hash delete n=" + n + ": " + elapsed / 1000 + " us");
         }
     }
 
