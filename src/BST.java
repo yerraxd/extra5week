@@ -16,27 +16,33 @@ public class BST {
     public boolean isEmpty() { return size == 0; }
 
     public boolean insert(int key) {
-        if (contains(key)) return false;
-        root = insert(root, key);
+        if (root == null) {
+            root = new Node(key);
+            size++;
+            return true;
+        }
+        Node cur = root;
+        while (true) {
+            if (key < cur.key) {
+                if (cur.left == null) { cur.left = new Node(key); break; }
+                cur = cur.left;
+            } else if (key > cur.key) {
+                if (cur.right == null) { cur.right = new Node(key); break; }
+                cur = cur.right;
+            } else {
+                return false;
+            }
+        }
         size++;
         return true;
     }
-
-
-    private Node insert(Node node, int key) {
-        if (node == null) return new Node(key);
-        if (key < node.key) node.left = insert(node.left, key);
-        else node.right = insert(node.right, key);
-        return node;
-    }
     public boolean contains(int key) {
-        return contains(root, key);
-    }
-
-    private boolean contains(Node node, int key) {
-        if (node == null) return false;
-        if (key == node.key) return true;
-        return key < node.key ? contains(node.left, key) : contains(node.right, key);
+        Node cur = root;
+        while (cur != null) {
+            if (key == cur.key) return true;
+            cur = key < cur.key ? cur.left : cur.right;
+        }
+        return false;
     }
     public List<Integer> inorder() {
         List<Integer> result = new ArrayList<>();
