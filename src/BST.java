@@ -1,5 +1,6 @@
 import java.util.ArrayList;
 import java.util.List;
+import java.util.NoSuchElementException;
 
 public class BST {
     private static class Node {
@@ -72,6 +73,20 @@ public class BST {
         }
         return node;
     }
+    public int min() {
+        if (root == null) throw new NoSuchElementException("tree is empty");
+        Node cur = root;
+        while (cur.left != null) cur = cur.left;
+        return cur.key;
+    }
+
+    public int max() {
+        if (root == null) throw new NoSuchElementException("tree is empty");
+        Node cur = root;
+        while (cur.right != null) cur = cur.right;
+        return cur.key;
+    }
+
 
 
 }
