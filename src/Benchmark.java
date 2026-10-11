@@ -1,12 +1,18 @@
 import java.util.Random;
+import java.util.function.IntFunction;
 
 public class Benchmark {
     private static final int[] SIZES = {100, 1000, 10000};
     private static int sink;
 
     public static void main(String[] args) {
+        runScenario("random", Benchmark::shuffledKeys);
+            runScenario("sorted", Benchmark::sortedKeys);
+        }
+        private static void runScenario(String name, IntFunction<int[]> generator) {
+        System.out.println("== " + name + " keys ==");
         for (int n : SIZES) {
-            int[] keys = shuffledKeys(n);
+            int[] keys = generator.apply(n);
             BST tree = new BST();
             HashTable table = new HashTable();
             long bstInsert = measure(() -> { for (int k : keys) tree.insert(k); });
@@ -28,7 +34,11 @@ public class Benchmark {
         task.run();
         return System.nanoTime() - start;
     }
-
+    private static int[] sortedKeys(int n) {
+        int[] keys = new int[n];
+        for (int i = 0; i < n; i++) keys[i] = i;
+        return keys;
+    }
     private static int[] shuffledKeys(int n) {
         int[] keys = new int[n];
         for (int i = 0; i < n; i++) keys[i] = i;
