@@ -15,7 +15,8 @@ public class HashTable {
     public boolean isEmpty() { return size == 0; }
 
     private int hash(int key) {
-        return Math.abs(key) % table.length;
+        int h = key ^ (key >>> 16);
+        return (h & 0x7FFFFFFF) % table.length;
     }
 
     public boolean insert(int key) {
