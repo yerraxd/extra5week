@@ -1,3 +1,6 @@
+import java.util.ArrayList;
+import java.util.List;
+
 public class BST {
     private static class Node {
         int key;
@@ -34,5 +37,18 @@ public class BST {
         if (key == node.key) return true;
         return key < node.key ? contains(node.left, key) : contains(node.right, key);
     }
+    public List<Integer> inorder() {
+        List<Integer> result = new ArrayList<>();
+        inorder(root, result);
+        return result;
+    }
+
+    private void inorder(Node node, List<Integer> result) {
+        if (node == null) return;
+        inorder(node.left, result);
+        result.add(node.key);
+        inorder(node.right, result);
+    }
+
 
 }
