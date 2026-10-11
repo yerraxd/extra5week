@@ -6,6 +6,7 @@ public class HashTable {
     }
 
     private static final int inital = 16;
+    private static final double loadFactor = 0.75;
 
     private Node[] table = new Node[inital];
     private int size;
@@ -19,6 +20,7 @@ public class HashTable {
 
     public boolean insert(int key) {
         if (contains(key)) return false;
+        if (size >= table.length * loadFactor) resize();
         int i = hash(key);
         table[i] = new Node(key, table[i]);
         size++;
@@ -38,6 +40,22 @@ public class HashTable {
         }
         return false;
     }
+
+    private void resize() {
+        Node[] old = table;
+        table = new Node[old.length * 2];
+        for (Node head : old) {
+            Node n = head;
+            while (n != null) {
+                Node next = n.next;
+                int i = hash(n.key);
+                n.next = table[i];
+                table[i] = n;
+                n = next;
+            }
+        }
+    }
+
 
     public boolean contains(int key) {
         for (Node n = table[hash(key)]; n != null; n = n.next) {
