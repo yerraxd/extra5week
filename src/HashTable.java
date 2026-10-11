@@ -25,6 +25,20 @@ public class HashTable {
         return true;
     }
 
+    public boolean delete(int key) {
+        int i = hash(key);
+        Node prev = null;
+        for (Node cur = table[i]; cur != null; prev = cur, cur = cur.next) {
+            if (cur.key == key) {
+                if (prev == null) table[i] = cur.next;
+                else prev.next = cur.next;
+                size--;
+                return true;
+            }
+        }
+        return false;
+    }
+
     public boolean contains(int key) {
         for (Node n = table[hash(key)]; n != null; n = n.next) {
             if (n.key == key) return true;
