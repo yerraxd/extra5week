@@ -2,6 +2,7 @@ import java.util.Random;
 
 public class Benchmark {
     private static final int[] SIZES = {100, 1000, 10000};
+    private static int sink;
 
     public static void main(String[] args) {
         for (int n : SIZES) {
@@ -16,6 +17,14 @@ public class Benchmark {
             for (int k : keys) table.insert(k);
             elapsed = System.nanoTime() - start;
             System.out.println("Hash insert n=" + n + ": " + elapsed / 1000 + " us");
+            start = System.nanoTime();
+            for (int k : keys) if (tree.contains(k)) sink++;
+            elapsed = System.nanoTime() - start;
+            System.out.println("BST search n=" + n + ": " + elapsed / 1000 + " us");
+            start = System.nanoTime();
+            for (int k : keys) if (table.contains(k)) sink++;
+            elapsed = System.nanoTime() - start;
+            System.out.println("Hash search n=" + n + ": " + elapsed / 1000 + " us");
         }
     }
 
