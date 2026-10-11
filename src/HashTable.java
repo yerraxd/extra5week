@@ -17,10 +17,12 @@ public class HashTable {
         return Math.abs(key) % table.length;
     }
 
-    public void insert(int key) {
+    public boolean insert(int key) {
+        if (contains(key)) return false;
         int i = hash(key);
         table[i] = new Node(key, table[i]);
         size++;
+        return true;
     }
 
     public boolean contains(int key) {
