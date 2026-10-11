@@ -22,4 +22,12 @@ public class HashTable {
         table[i] = new Node(key, table[i]);
         size++;
     }
+
+    public boolean contains(int key) {
+        for (Node n = table[hash(key)]; n != null; n = n.next) {
+            if (n.key == key) return true;
+        }
+        return false;
+    }
+
 }
