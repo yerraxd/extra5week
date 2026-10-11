@@ -8,33 +8,25 @@ public class Benchmark {
         for (int n : SIZES) {
             int[] keys = shuffledKeys(n);
             BST tree = new BST();
-            long start = System.nanoTime();
-            for (int k : keys) tree.insert(k);
-            long elapsed = System.nanoTime() - start;
-            System.out.println("BST insert n=" + n + ": " + elapsed / 1000 + " us");
             HashTable table = new HashTable();
-            start = System.nanoTime();
-            for (int k : keys) table.insert(k);
-            elapsed = System.nanoTime() - start;
-            System.out.println("Hash insert n=" + n + ": " + elapsed / 1000 + " us");
-            start = System.nanoTime();
-            for (int k : keys) if (tree.contains(k)) sink++;
-            elapsed = System.nanoTime() - start;
-            System.out.println("BST search n=" + n + ": " + elapsed / 1000 + " us");
-            start = System.nanoTime();
-            for (int k : keys) if (table.contains(k)) sink++;
-            elapsed = System.nanoTime() - start;
-            System.out.println("Hash search n=" + n + ": " + elapsed / 1000 + " us");
-            start = System.nanoTime();
-            for (int k : keys) tree.delete(k);
-            elapsed = System.nanoTime() - start;
-            System.out.println("BST delete n=" + n + ": " + elapsed / 1000 + " us");
-
-            start = System.nanoTime();
-            for (int k : keys) table.delete(k);
-            elapsed = System.nanoTime() - start;
-            System.out.println("Hash delete n=" + n + ": " + elapsed / 1000 + " us");
+            long bstInsert = measure(() -> { for (int k : keys) tree.insert(k); });
+            System.out.println("BST insert n=" + n + ": " + bstInsert / 1000 + " us");
+            long hashInsert = measure(() -> { for (int k : keys) table.insert(k); });
+            System.out.println("Hash insert n=" + n + ": " + hashInsert / 1000 + " us");
+            long bstSearch = measure(() -> { for (int k : keys) if (tree.contains(k)) sink++; });
+            System.out.println("BST search n=" + n + ": " + bstSearch / 1000 + " us");
+            long hashSearch = measure(() -> { for (int k : keys) if (table.contains(k)) sink++; });
+            System.out.println("Hash search n=" + n + ": " + hashSearch / 1000 + " us");
+            long bstDelete = measure(() -> { for (int k : keys) tree.delete(k); });
+            System.out.println("BST delete n=" + n + ": " + bstDelete / 1000 + " us");
+            long hashDelete = measure(() -> { for (int k : keys) table.delete(k); });
+            System.out.println("Hash delete n=" + n + ": " + hashDelete / 1000 + " us");
         }
+    }
+    private static long measure(Runnable task) {
+        long start = System.nanoTime();
+        task.run();
+        return System.nanoTime() - start;
     }
 
     private static int[] shuffledKeys(int n) {
